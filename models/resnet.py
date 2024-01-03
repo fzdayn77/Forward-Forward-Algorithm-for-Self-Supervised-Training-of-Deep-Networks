@@ -7,6 +7,6 @@ def get_resnet(name, pretrained=False):
         "resnet50": torchvision.models.resnet50(pretrained=pretrained),
     }
     if name not in resnets.keys():
-        raise KeyError(f"{name} is not a valid ResNet version")
+        raise KeyError(f"{name} is not a valid ResNet-name version")
     
     return resnets[name]
