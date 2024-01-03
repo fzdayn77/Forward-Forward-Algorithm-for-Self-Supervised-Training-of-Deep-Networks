@@ -8,21 +8,22 @@ DEVICE = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("
 print(f'Device ===> {DEVICE}')
 
 # Hyperparameters
-BATCH_SIZE = 128
-LEARNING_RATE = 0.01
-NUM_EPOCHS = 1
-TEMPERATURE = 0.7
-NUM_LAYERS = 4
+CONFIGS = {
+    'batch_size': 128,
+    'learning_rate': 0.001,
+    'num_epochs': 100,
+    'temperature': 0.7,
+    'num_hidden_laxers': 4}
+
+# Data preparation
+train_set, train_loader, test_set, test_loader = get_data(dataset_name="cifar10", batch_size=CONFIGS['batch_size'])
 
 # Encoder
 encoder = get_encoder(model_name="forward-forward",
-                      num_layers=NUM_LAYERS,
-                      lr=LEARNING_RATE,
-                      temperature=TEMPERATURE,
+                      num_layers=CONFIGS['num_hidden_laxers'],
+                      lr=CONFIGS['learning_rate'],
+                      temperature=CONFIGS['temperature'],
                       device=DEVICE)
-
-# Data preparation
-train_loader, test_loader = get_data(dataset_name="cifar10", batch_size=BATCH_SIZE)
 
 # Executing
 # TODO

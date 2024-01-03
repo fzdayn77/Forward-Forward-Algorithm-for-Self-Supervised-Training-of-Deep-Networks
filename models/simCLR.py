@@ -2,7 +2,7 @@ import torch.nn as nn
 from simCLR.models.projection_head import Projection_Head
 
 class SimCLR(nn.Module): 
-    def __init__(self, encoder: nn.Module, n_features: int, projection_head: bool=False):
+    def __init__(self, encoder: nn.Module, n_features: int, projection_head: bool=True):
         super(SimCLR, self).__init__() 
         self.n_features = n_features
         self.projection_head = projection_head

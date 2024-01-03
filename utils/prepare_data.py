@@ -59,4 +59,4 @@ def get_data(dataset_name: str, batch_size: int, path=None):
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
     test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False)
 
-    return train_loader, test_loader
+    return train_set, train_loader, test_set, test_loader
