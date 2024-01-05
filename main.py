@@ -32,7 +32,7 @@ model = SimCLR(encoder, n_features=512, projection=True, device=DEVICE)
 model.to(DEVICE)
 
 # Loss
-criterion = NTXentLoss()
+criterion = NTXentLoss(temperature=CONFIGS['temperature'], memory_bank_size=0)
 
 # Optimizer
 optimizer = Adam(model.parameters(), lr=CONFIGS['learning_rate'])

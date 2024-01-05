@@ -1,5 +1,5 @@
 import torch.nn as nn
-from resnet import get_resnet
+from models.resnet import get_resnet
 
 def get_encoder(model_name: str, num_layers: int, lr: float, temperature: float):
     '''

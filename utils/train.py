@@ -20,19 +20,18 @@ def train_simCLR(model: nn.Module, num_epochs: int, train_loader: DataLoader, lo
       x0 = x0.to(device)
       x1 = x1.to(device)
 
-      optimizer.zero_grad()
-
       z0 = model(x0)
       z1 = model(x1)
 
       loss = loss_func(z0, z1)
       total_loss += loss.detach()
 
+      optimizer.zero_grad()
       loss.backward()
       optimizer.step()
         
     avg_loss = total_loss / len(train_loader)
-    print(f"loss: {avg_loss:.5f}")
+    print(f"loss: {avg_loss:.4f}")
 
   # Total time
   elapsed = (time.time() - start_time) / 60
