@@ -15,7 +15,7 @@ class Projection_Head():
         self.model = nn.Sequential(
             nn.Linear(self.input_dim, self.hidden_dim, bias=True),
             nn.BatchNorm1d(self.hidden_dim),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Linear(self.hidden_dim, self.output_dim, bias=False)
         )
 
