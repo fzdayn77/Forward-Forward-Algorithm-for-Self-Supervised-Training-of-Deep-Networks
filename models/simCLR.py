@@ -1,5 +1,5 @@
 import torch.nn as nn
-from simCLR.models.projection_head import Projection_Head
+from models.projection_head import Projection_Head
 
 class SimCLR(nn.Module): 
     def __init__(self, encoder: nn.Module, n_features: int, projection_head: bool=True):
@@ -7,13 +7,12 @@ class SimCLR(nn.Module):
         self.n_features = n_features
         self.projection_head = projection_head
 
-        # encoder is either a ResNet or a Forward-Forward Network
+        # encoder is either a ResNet or the Forward-Forward model
         self.encoder = encoder
 
         if self.projection_head:
-            # projector is a simple MLP with ReLU as activation function
             self.projector = Projection_Head(input_dim=self.n_features, hidden_dim=self.n_features,
-                                            output_dim=self.n_features).forward
+                                            output_dim=self.n_features)
 
     def forward(self, x_i, x_j):
         # x -> h

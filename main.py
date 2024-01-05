@@ -1,7 +1,6 @@
 import torch
 from utils.prepare_data import get_data
 from models.encoder import get_encoder
-from utils.utils import train_model, test_model
 
 # Device
 DEVICE = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
@@ -24,6 +23,12 @@ encoder = get_encoder(model_name="forward-forward",
                       lr=CONFIGS['learning_rate'],
                       temperature=CONFIGS['temperature'],
                       device=DEVICE)
+
+# Loss
+# TODO
+
+# Optimizer
+# TODO
 
 # Executing
 # TODO
