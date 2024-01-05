@@ -12,6 +12,9 @@ class SimCLR(nn.Module):
         if self.projection:
           self.projection_head = Projection_Head(input_dim=n_features, hidden_dim=n_features, 
                                                  output_dim=128, device=self.device)
+          print("Projection Head ===> Enabled")
+        else:
+          print("Projection Head ===> Disabled")
 
     def forward(self, x):
         # x -> h
