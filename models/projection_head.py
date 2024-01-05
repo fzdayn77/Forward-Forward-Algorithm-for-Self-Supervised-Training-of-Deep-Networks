@@ -3,22 +3,23 @@ from torch.nn import functional as F
 
 class Projection_Head():
     """
-    This class is an implementation of the projection head proposed in the SimCLR paper 
+    This class is an implementation of the projection head proposed in the SimCLR paper
     (ArXiv, https://arxiv.org/abs/2002.05709).
     """
-    def __init__(self, input_dim: int, hidden_dim: int, output_dim: int):
+    def __init__(self, input_dim: int, hidden_dim: int, output_dim: int, device=None):
         super().__init__()
         self.input_dim = input_dim
         self.hidden_dim = hidden_dim
         self.output_dim = output_dim
+        self.device = device
 
-        self.model = nn.Sequential(
+        self.mlp = nn.Sequential(
             nn.Linear(self.input_dim, self.hidden_dim, bias=True),
             nn.BatchNorm1d(self.hidden_dim),
             nn.ReLU(inplace=True),
             nn.Linear(self.hidden_dim, self.output_dim, bias=False)
-        )
+        ).to(self.device)
 
-    def forward(self, x):
-        x = self.model(x)
+    def __call__(self, x):
+        x = self.mlp(x)
         return F.normalize(x, dim=1)
