@@ -1,4 +1,5 @@
 import torch
+import os
 from torch.optim import Adam
 from utils.prepare_data import get_data
 from models.encoder import get_encoder
@@ -9,6 +10,7 @@ from utils.train import train_simCLR
 # Device
 DEVICE = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 print(f'Device ===> {DEVICE}')
+NUM_WORKERS = os.cpu_count()
 
 # Hyperparameters
 CONFIGS = {
@@ -19,7 +21,7 @@ CONFIGS = {
     'num_hidden_layers': 4}
 
 # Data preparation
-train_set, train_loader, test_set, test_loader = get_data(dataset_name="cifar10", batch_size=CONFIGS['batch_size'])
+train_set, train_loader, test_set, test_loader = get_data(num_workers=NUM_WORKERS, dataset_name="cifar10", batch_size=CONFIGS['batch_size'])
 
 # Encoder
 encoder = get_encoder(model_name="resnet34", num_layers=CONFIGS['num_hidden_layers'], 

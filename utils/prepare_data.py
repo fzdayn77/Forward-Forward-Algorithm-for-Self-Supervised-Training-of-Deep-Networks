@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import transforms
 
 
-def get_data(dataset_name: str, batch_size: int, path=None):
+def get_data(num_workers, dataset_name: str, batch_size: int, path: str=None):
     """
     Imports training sets and testing sets of the chosen dataset.
 
@@ -55,7 +55,7 @@ def get_data(dataset_name: str, batch_size: int, path=None):
         raise KeyError(f"Choose a valid datset name (possible dataset names: cifar10 or cifar100 or imageNet)")
 
     # Trainloader and Testloader
-    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, pin_memory=True)
-    test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False, pin_memory=True)
+    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, pin_memory=True, drop_last=True, num_workers=num_workers)
+    test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False, pin_memory=True, drop_last=False, num_workers=num_workers)
 
     return train_set, train_loader, test_set, test_loader
