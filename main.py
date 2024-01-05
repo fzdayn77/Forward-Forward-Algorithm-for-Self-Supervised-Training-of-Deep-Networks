@@ -14,7 +14,7 @@ NUM_WORKERS = os.cpu_count()
 
 # Hyperparameters
 CONFIGS = {
-    'batch_size': 128,
+    'batch_size': 256,
     'learning_rate': 0.001,
     'num_epochs': 100,
     'temperature': 0.7,
