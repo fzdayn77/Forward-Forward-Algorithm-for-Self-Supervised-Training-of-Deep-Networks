@@ -11,8 +11,11 @@ class SimCLR(nn.Module):
         self.encoder = encoder
 
         if self.projection_head:
+            print("Projection Head is used")
             self.projector = Projection_Head(input_dim=self.n_features, hidden_dim=self.n_features,
                                             output_dim=self.n_features)
+        else:
+            print("Projection Head is NOT used")
 
     def forward(self, x_i, x_j):
         # x -> h
