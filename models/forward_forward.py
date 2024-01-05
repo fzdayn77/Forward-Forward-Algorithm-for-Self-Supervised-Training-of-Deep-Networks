@@ -1,8 +1,6 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from utils.nt_xent_loss import nt_xent_loss
-
 
 class FF_Layer(nn.Linear):
   def __init__(self, in_features: int, out_features: int, temperature: float, optimizer=None, device=None):
@@ -23,10 +21,10 @@ class FF_Layer(nn.Linear):
       # x_1 and x_2 shapes : ([128, 3072])
       # 3072 = 32*32*3
       self.opt.zero_grad()
-      loss = nt_xent_loss(x_1, x_2, temperature=self.temperature)
-      loss.backward()
+      #loss = nt_xent_loss(x_1, x_2, temperature=self.temperature)
+      #loss.backward()
       self.opt.step()
-      return loss
+      #return loss
 
   def forward(self, x_1, x_2):
     x_1 = super().forward(x_1)
