@@ -13,7 +13,7 @@ def get_encoder(model_name: str, num_layers: int, lr: float, temperature: float)
         temperature (float): the used temperature value
 
     Returns:
-        encoder (nn.Module): the chosen model.
+        encoder (nn.Module): the chosen model
     '''
 
     # List of all possible encoders
@@ -31,4 +31,5 @@ def get_encoder(model_name: str, num_layers: int, lr: float, temperature: float)
 
     print(f'Encoder ===> {model_name}')
 
-    return nn.Sequential(*list(encoder.children())[:-1])
+    #return nn.Sequential(*list(encoder.children())[:-1])
+    return encoder
