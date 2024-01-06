@@ -15,21 +15,26 @@ NUM_WORKERS = os.cpu_count()
 # Hyperparameters
 CONFIGS = {
     'batch_size': 256,
-    'learning_rate': 0.001,
+    'learning_rate': 0.01,
     'num_epochs': 100,
-    'temperature': 0.7,
-    'num_hidden_layers': 4}
+    'temperature': 0.07,
+    'num_hidden_layers': 4,
+    'projection_dims': 128}
 
 # Data preparation
-train_set, train_loader, test_set, test_loader = get_data(num_workers=NUM_WORKERS, dataset_name="cifar10", batch_size=CONFIGS['batch_size'])
+train_set, train_loader, test_set, test_loader = get_data(num_workers=NUM_WORKERS, 
+                                                          dataset_name="cifar10", batch_size=CONFIGS['batch_size'])
 
 # Encoder
-encoder = get_encoder(model_name="resnet34", num_layers=CONFIGS['num_hidden_layers'], 
+encoder = get_encoder(model_name="resnet18", num_layers=CONFIGS['num_hidden_layers'],
                       lr=CONFIGS['learning_rate'], temperature=CONFIGS['temperature'])
+n_features = encoder.fc.in_features
+
 
 # Model
-model = SimCLR(encoder, n_features=512, projection=True, device=DEVICE)
-model.to(DEVICE)
+simclr_model = SimCLR(encoder=encoder, projection_dim=CONFIGS['projection_dims'], 
+                      n_features=n_features, projection=True)
+simclr_model = simclr_model.to(DEVICE)
 
 # Loss
 criterion = NTXentLoss(temperature=CONFIGS['temperature'], memory_bank_size=0)
