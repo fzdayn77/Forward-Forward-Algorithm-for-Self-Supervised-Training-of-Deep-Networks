@@ -1,5 +1,5 @@
 #
-# This source code is inspired from Pytorch Lightning SimCLR implementation :
+# This source code is inspired from the Pytorch-Lightning-simCLR implementation :
 #   https://lightning.ai/docs/pytorch/stable/notebooks/course_UvA-DL/13-contrastive-learning.html
 #
 
@@ -9,10 +9,9 @@ from torchvision.transforms import transforms
 
 class GaussianBlur(object):
     """
-    Blurs the given image with separable convolution as described in the SimCLR paper
-    (ArXiv, https://arxiv.org/abs/2002.05709).
+    Blurs the given image with separable convolution as described in the official simCLR paper
+    (ArXiv, https://arxiv.org/abs/2002.05709)
     """
-
     def __init__(self, kernel_size, p=0.5, min=0.1, max=2.0):
         self.min = min
         self.max = max
@@ -24,7 +23,7 @@ class GaussianBlur(object):
     def __call__(self, sample):
         sample = np.array(sample)
 
-        # blur the image with a 50% chance
+        # bluring the image with a 50% chance
         prob = np.random.random_sample()
 
         # less than 50%
@@ -37,10 +36,8 @@ class GaussianBlur(object):
 
 class train_data_augmentation():
     """
-    Implementation of the data augmentations on the trainig data
-    as proposed in the SimCLR official paper
+    Implementation of the train-data-augmentation-pipeline for the trainig data
     """
-
     def __init__(
         self,
         size: int = 32,
@@ -54,10 +51,10 @@ class train_data_augmentation():
         self.normalize = normalize
 
         self.color_jitter = transforms.ColorJitter(
-            brightness=0.5 * self.jitter_strength,
-            contrast=0.5 * self.jitter_strength,
-            saturation=0.5 * self.jitter_strength,
-            hue=0.1 * self.jitter_strength
+            brightness=0.8 * self.jitter_strength,
+            contrast=0.8 * self.jitter_strength,
+            saturation=0.8 * self.jitter_strength,
+            hue=0.2 * self.jitter_strength
         )
 
         data_transforms = [
@@ -84,43 +81,28 @@ class train_data_augmentation():
     def __call__(self, x):
         x_i = self.train_transform(x)
         x_j = self.train_transform(x)
-        return [x_i, x_j]
+        return x_i, x_j
 
 
 class test_data_augmentation():
     """
-    Implementation of the data augmentations on the testing data
-    as proposed in the SimCLR official paper
+    Implementation of the test-data-augmentation-pipeline for the testing data
     """
-
     def __init__(
         self,
         size: int = 32,
-        crop: bool = False,
         normalize = transforms.Normalize(mean=(0, 0, 0), std=(1, 1, 1)) # Default Normalization
     ):
         self.size = size
-        self.crop = crop
         self.normalize = normalize
 
-        data_transforms = [
+        self.test_transform = transforms.Compose([
             # Resizing images before any augmentation to a size of 32x32
-            transforms.Resize(self.size)
-        ]
-
-        # Adding Crop
-        if self.crop:
-            data_transforms.append(transforms.RandomResizedCrop(size=self.size))
-
-        data_transforms.append(transforms.ToTensor())
-
-        # Adding Normalization
-        data_transforms.append(self.normalize)
-
-        # Transformations on the testing data
-        self.test_transform = transforms.Compose(data_transforms)
+            transforms.Resize(self.size),
+            transforms.ToTensor(),
+            self.normalize])
 
     def __call__(self, x):
         x_i = self.test_transform(x)
         x_j = self.test_transform(x)
-        return [x_i, x_j]
+        return x_i, x_j
