@@ -43,5 +43,5 @@ criterion = NTXentLoss(temperature=CONFIGS['temperature'], memory_bank_size=0)
 optimizer = Adam(simclr_model.parameters(), lr=CONFIGS['learning_rate'])
 
 # Executing
-train_losses, validation_losses = compute_train_val_loss_BP(model=simclr_model, num_epochs=CONFIGS['num_epochs'], 
+train_losses_list, validation_losses_list = compute_train_val_loss_BP(model=simclr_model, num_epochs=CONFIGS['num_epochs'], 
             train_loader=train_loader, loss_func=criterion, optimizer=optimizer, device=DEVICE)

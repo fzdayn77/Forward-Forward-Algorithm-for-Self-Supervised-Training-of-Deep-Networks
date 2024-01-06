@@ -53,14 +53,20 @@ def test_one_epoch(model, test_loader, loss_func, device):
 
 def compute_train_val_loss_BP(model: nn.Module, num_epochs: int, train_loader: DataLoader, test_loader: DataLoader, loss_func, optimizer=None, device=None):
   start_time = time.time()
+  train_losses_list = []
+  validation_losses_list = []
+  
   for epoch in range(num_epochs):
     train_tqdm = tqdm(train_loader, desc=f"Training | Epoch {epoch+1}/{num_epochs}", leave=True, position=0)
     
     # Training
     avg_train_loss, train_losses = train_one_epoch(model, train_tqdm, 
                                              len(train_loader), loss_func, optimizer, device)
+    train_losses_list.append([loss for loss in train_losses])
+    
     # Validation
     avg_val_loss, validation_losses = test_one_epoch(model, test_loader, loss_func, device)
+    validation_losses_list.append([loss for loss in validation_losses])
 
     # Logging training and validation losses
     print(f"Training loss: {avg_train_loss:.4f} || Validation loss: {avg_val_loss:.4f}")
@@ -70,4 +76,4 @@ def compute_train_val_loss_BP(model: nn.Module, num_epochs: int, train_loader: D
   print(f'Total time: {elapsed:.2f} min')
   print("Done!")
 
-  return train_losses, validation_losses
+  return train_losses_list, validation_losses_list
