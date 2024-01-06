@@ -5,7 +5,7 @@ from utils.prepare_data import get_data
 from models.encoder import get_encoder
 from models.simCLR import SimCLR
 from lightly.loss import NTXentLoss
-from utils.train import train_simCLR
+from utils.help_functions import compute_train_val_loss_BP
 
 # Device
 DEVICE = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
@@ -40,8 +40,8 @@ simclr_model = simclr_model.to(DEVICE)
 criterion = NTXentLoss(temperature=CONFIGS['temperature'], memory_bank_size=0)
 
 # Optimizer
-optimizer = Adam(model.parameters(), lr=CONFIGS['learning_rate'])
+optimizer = Adam(simclr_model.parameters(), lr=CONFIGS['learning_rate'])
 
 # Executing
-train_simCLR(model=model, num_epochs=CONFIGS['num_epochs'], train_loader=train_loader,
-             loss_func=criterion, optimizer=optimizer, device=DEVICE)
+train_losses, validation_losses = compute_train_val_loss_BP(model=simclr_model, num_epochs=CONFIGS['num_epochs'], 
+            train_loader=train_loader, loss_func=criterion, optimizer=optimizer, device=DEVICE)
