@@ -4,11 +4,13 @@ from torch.utils.data import DataLoader
 from torchvision.transforms import transforms
 
 
-def get_data(num_workers, dataset_name: str, batch_size: int, path: str=None):
+def get_data(num_workers: int, dataset_name: str, batch_size: int, path: str=None):
     """
-    Imports training sets and testing sets of the chosen dataset.
+    Imports training sets and testing sets of the chosen dataset 
+    and creating their corresponding loaders.
 
     Parameters:
+        num_workers (int): number of workers
         dataset_name (str): name of the chosen dataset
         batch_size (int): size of the mini-batch
         path (str): path to where the data will be downloaded
@@ -29,7 +31,7 @@ def get_data(num_workers, dataset_name: str, batch_size: int, path: str=None):
                                         mean=(0.4914, 0.4822, 0.4465), std=(0.2470, 0.2435, 0.2616))))
 
         test_set = datasets.CIFAR10(root=path, train=False, download=True, 
-                                   transform=test_data_augmentation(crop=False))
+                                   transform=test_data_augmentation())
 
     elif dataset_name == "cifar100":
         if path is None:
@@ -39,7 +41,7 @@ def get_data(num_workers, dataset_name: str, batch_size: int, path: str=None):
                                         mean=(0.4914, 0.4822, 0.4465), std=(0.2470, 0.2435, 0.2616))))
 
         test_set = datasets.CIFAR100(root=path, train=False, download=True, 
-                                   transform=test_data_augmentation(crop=False))
+                                   transform=test_data_augmentation())
 
     elif dataset_name == "imageNet":
         if path is None:
@@ -49,13 +51,15 @@ def get_data(num_workers, dataset_name: str, batch_size: int, path: str=None):
                                         mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225))))
 
         test_set = datasets.ImageNet(root=path, train=False, download=True, 
-                                   transform=test_data_augmentation(crop=False))
+                                   transform=test_data_augmentation())
 
     else:
         raise KeyError(f"Choose a valid datset name (possible dataset names: cifar10 or cifar100 or imageNet)")
 
     # Trainloader and Testloader
-    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, pin_memory=True, drop_last=True, num_workers=num_workers)
-    test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False, pin_memory=True, drop_last=False, num_workers=num_workers)
+    train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True, pin_memory=True, 
+                              drop_last=True, num_workers=num_workers)
+    test_loader = DataLoader(test_set, batch_size=batch_size, shuffle=False, pin_memory=True, 
+                             drop_last=True, num_workers=num_workers)
 
     return train_set, train_loader, test_set, test_loader
