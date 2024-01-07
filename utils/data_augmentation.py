@@ -97,7 +97,6 @@ class test_data_augmentation():
         self.normalize = normalize
 
         self.test_transform = transforms.Compose([
-            # Resizing images before any augmentation to a size of 32x32
             transforms.Resize(self.size),
             transforms.ToTensor(),
             self.normalize])
