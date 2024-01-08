@@ -1,7 +1,8 @@
-import torch.nn as nn
+from configs import CONFIGS
+from models.forward_forward import FF_Net
 from models.resnet import get_resnet
 
-def get_encoder(model_name: str, num_layers: int, lr: float, temperature: float):
+def get_encoder(model_name, num_hidden_layers, num_epochs, lr):
     '''
     Chooses an encoder from the given models.
 
@@ -26,10 +27,9 @@ def get_encoder(model_name: str, num_layers: int, lr: float, temperature: float)
     if model_name in ["resnet18", "resnet34", "resnet50"]:
         encoder = get_resnet(name=model_name)
     else:
-      pass
-        #encoder = FF_Net(num_layers, lr, temperature, device=device)
+      encoder = FF_Net(in_features=CONFIGS['in_features'], out_features=CONFIGS['out_features'], 
+                       num_hidden_layers=num_hidden_layers, num_epochs=num_epochs, lr=lr, device=DEVICE)
 
     print(f'Encoder ===> {model_name}')
 
-    #return nn.Sequential(*list(encoder.children())[:-1])
     return encoder
