@@ -5,23 +5,13 @@ from utils.prepare_data import get_data
 from models.encoder import get_encoder
 from models.simCLR import SimCLR
 from lightly.loss import NTXentLoss
+from configs import CONFIGS
 from utils.help_functions import compute_train_val_loss_BP
 
 # Device
 DEVICE = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 print(f'Device ===> {DEVICE}')
 NUM_WORKERS = os.cpu_count()
-
-# Hyperparameters
-CONFIGS = {
-    'batch_size': 512,
-    'learning_rate': 0.003,
-    'num_epochs': 20,
-    'temperature': 0.5,
-    'num_hidden_layers': 4,
-    'in_features': 1024,
-    'out_features': 2000,
-    'projection_dims': 128}
 
 # Data preparation
 train_set, train_loader, test_set, test_loader = get_data(num_workers=NUM_WORKERS, 
